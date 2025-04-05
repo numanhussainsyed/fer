@@ -5,12 +5,16 @@ import cv2
 import base64
 import io
 from PIL import Image
+import os
 
 app = Flask(__name__)
 
-# ✅ Load model and face cascade only once
+# ✅ Load model and haarcascade once
 model = load_model('model_file_30epochs.h5')
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+HAAR_PATH = os.path.join(os.path.dirname(__file__), 'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier(HAAR_PATH)
+
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise']
 
 @app.route('/')
@@ -28,6 +32,7 @@ def predict():
         gray = cv2.cvtColor(open_cv_image, cv2.COLOR_RGB2GRAY)
 
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        print("Faces found:", len(faces))
 
         if len(faces) == 0:
             return jsonify({'emotion': 'No face detected'})
