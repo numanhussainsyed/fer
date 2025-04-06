@@ -30,7 +30,6 @@ function sendFrame() {
     emotionDisplay.innerText = `Emotion: ${data.emotion}`;
   })
   .catch(err => {
-    console.error(err);
     emotionDisplay.innerText = 'Error detecting emotion';
   });
 
