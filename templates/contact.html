@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Contact | EmotionAI{% endblock %}
+{% block content %}
+<div class="contact-section">
+  <h1>📬 Contact Us</h1>
+  <form method="post" action="/contact">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+    <button type="submit">Send</button>
+  </form>
+  {% if success %}
+    <p class="success">✅ Your message has been sent!</p>
+  {% endif %}
+</div>
+{% endblock %}

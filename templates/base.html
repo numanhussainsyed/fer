@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}EmotionAI{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body class="dark-theme">
+  <header>
+    <div class="logo">🤖 EmotionAI</div>
+    <nav>
+      <a href="/">🏠 Home</a>
+      <a href="/live">📷 Live</a>
+      <a href="/dashboard">📊 Dashboard</a>
+      <a href="/about">❓ About</a>
+      <a href="/contact">📬 Contact</a>
+    </nav>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer>
+    <p>© 2025 EmotionAI • Built with ❤️ using Flask + TensorFlow</p>
+    <p><a href="mailto:emotionai@example.com">Contact us</a></p>
+  </footer>
+  <script src="{{ url_for('static', filename='theme.js') }}"></script>
+<script>
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = `${Math.random() * 100}vw`;
+    particle.style.animationDuration = `${5 + Math.random() * 10}s`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
+    document.body.appendChild(particle);
+  }
+</script>
+<!-- ✨ Star Particles -->
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+<div class="stars" id="starContainer"></div>
+<script>
+  // 🌠 Generate 100 random stars
+  const container = document.getElementById("starContainer");
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.top = `${Math.random() * 100}vh`;
+    star.style.left = `${Math.random() * 100}vw`;
+    star.style.animationDuration = `${1.5 + Math.random()}s`;
+    container.appendChild(star);
+  }
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+
+</body>
+</html>

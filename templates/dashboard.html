@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | EmotionAI{% endblock %}
+
+{% block content %}
+<div class="dashboard-section">
+  <h1><span style="font-size:1.5em">📊</span> Real-Time Emotion Dashboard</h1>
+
+  <div class="chart-container">
+    <canvas id="barChart" width="400" height="400"></canvas>
+    <canvas id="donutChart" width="400" height="400"></canvas>
+  </div>
+
+  <div class="dashboard-controls">
+    <button id="reset-btn">🧹 Reset Stats</button>
+    <button id="export-btn">📦 Export CSV</button>
+  </div>
+
+  <h2 style="margin-top:30px;">🕒 Emotion History</h2>
+  <div class="history-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Emotion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in history %}
+          <tr>
+            <td>{{ entry.timestamp }}</td>
+            <td>{{ entry.emotion }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const emotionCounts = JSON.parse('{{ counts | tojson | safe }}');
+  const labels = Object.keys(emotionCounts);
+  const data = Object.values(emotionCounts);
+
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Emotion Count',
+        data: data,
+        backgroundColor: 'rgba(0,255,255,0.7)'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false }},
+      scales: { y: { beginAtZero: true }}
+    }
+  });
+
+  new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: [
+          '#ff6384', '#36a2eb', '#ffce56',
+          '#8bc34a', '#9c27b0', '#ff9800', '#00bcd4'
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+
+  document.getElementById('reset-btn').onclick = () => {
+    fetch('/reset', { method: 'POST' }).then(() => window.location.reload());
+  };
+
+  document.getElementById('export-btn').onclick = () => {
+    const table = document.querySelector('.history-table table');
+    let csv = 'Timestamp,Emotion\n';
+    [...table.rows].slice(1).forEach(row => {
+      csv += [...row.cells].map(cell => cell.textContent).join(',') + '\n';
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'emotion_history.csv';
+    a.click();
+  };
+</script>
+{% endblock %}

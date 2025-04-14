@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Real-Time Emotion Detection</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Real-Time Emotion Detection</h1>
-    <div class="camera-container">
-        <video id="video" autoplay muted></video>
-        <canvas id="canvas" style="display: none;"></canvas>
-    </div>
-    <div id="emotion">Detecting...</div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Live Detection | EmotionAI{% endblock %}
+{% block content %}
+<div class="camera-container">
+  <video id="video" autoplay muted></video>
+  <canvas id="canvas" style="display: none;"></canvas>
+  <div id="emotion">Detecting...</div>
+</div>
+<div class="controls">
+<button id="toggle-theme" class="pulse-icon">🌓 Toggle Theme</button>
+<button id="toggle-sound" class="pulse-icon">🔈 Mute</button>
+<button id="capture-btn" class="pulse-icon">📸 Capture</button>
+</div>
+<a id="download-link" style="display: none;">Download Snapshot</a>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
